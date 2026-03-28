@@ -666,6 +666,7 @@
         body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
       })
       .then(function(res) {
+        console.log('Webhook response status:', res.status);
         if (!res.ok) throw new Error('Server error ' + res.status);
         setSubmitting(false);
         showStatus('success', '✓ Message sent! We\'ll be in touch soon.');
@@ -673,9 +674,10 @@
           document.getElementById(id).value = '';
         });
       })
-      .catch(function() {
+      .catch(function(err) {
+        console.error('Webhook error:', err);
         setSubmitting(false);
-        showStatus('error', 'Something went wrong. Please try again or email us directly.');
+        showStatus('error', 'Error: ' + err.message + ' — Check console for details.');
       });
     });
   }
